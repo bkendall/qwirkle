@@ -11,9 +11,10 @@ My setup:
 |python|2.7.5|
 |coffeescript|1.6.3|
 |pip|1.4.1|
+|tornado|3.1.1|
 |supervisord|3.0|
 
-`pip` can be used to install `supervisord` - use `pip install -r :requirements.txt`
+`pip` can be used to install `supervisord` and `tornado` - use `pip install -r requirements.txt`
 
 ## Run Server
 
