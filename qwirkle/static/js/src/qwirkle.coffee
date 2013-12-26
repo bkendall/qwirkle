@@ -3,7 +3,7 @@ class Qwirkle
         console.log "Initializing Qwirkle" if @debug
         @ctx = @canvas.getContext "2d"
 
-        @ws = new WebSocket "ws://#{window.location.hostname}/ws"
+        @ws = new WebSocket "ws://#{window.location.host}/ws"
         @ws.onopen = () =>
             console.log "initializing ws" if @debug
             @ws.send JSON.stringify {
