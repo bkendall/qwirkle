@@ -1,2 +1,3 @@
 *.pyc
 qwirkle/static/js/qwirkle.js
+supervisord.pid
