@@ -60,5 +60,7 @@ application = web.Application([
 ], **settings)
 
 if __name__ == '__main__':
-    application.listen(8000)
+    port = os.environ['QWIRKLE_PORT']
+    if port == '': port = 8000
+    application.listen(port)
     ioloop.IOLoop.instance().start()
