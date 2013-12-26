@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>Sup</p>
+<canvas height="500px" width="500px" id="qwirkle_canvas"></canvas>
+<button id="qwirkle_clear">Clear Board</button>
+{% end %}
+
+{% block footer %}
+<script src="{{ static_url('js/qwirkle.js') }}"></script>
+<script>
+</script>
+{% end %}
