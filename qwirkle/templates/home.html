@@ -9,5 +9,9 @@
 {% block footer %}
 <script src="{{ static_url('js/qwirkle.js') }}"></script>
 <script>
+c = document.getElementById("qwirkle_canvas")
+b = document.getElementById("qwirkle_clear")
+q = new window.Qwirkle()
+q.init(c, b, true)
 </script>
 {% end %}

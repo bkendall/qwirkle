@@ -1,17 +1,9 @@
 class Qwirkle
-    constructor: (@canvas, @debug) ->
+    init: (@canvas, @button, @debug) ->
         console.log "Initializing Qwirkle" if @debug
         @ctx = @canvas.getContext "2d"
 
-        @ws = new WebSocket "ws://#{window.location.host}/ws"
-        @ws.onopen = () =>
-            console.log "initializing ws" if @debug
-            @ws.send JSON.stringify {
-                'action': 'init',
-            }
-        @ws.onmessage = (e) =>
-            console.log "received: #{e.data}" if @debug
-            @remote_action e.data
+        @ws = @create_websocket()
 
         @box_width = 35
         @box_height = 35
@@ -23,19 +15,31 @@ class Qwirkle
             @fill_box event.layerX, event.layerY
 
         # TODO: dynamically create button or something
-        button = document.getElementById "qwirkle_clear"
-        button.onclick = (event) =>
+        @button.onclick = (event) =>
             @clear_grid false
+
+    create_websocket: ->
+        ws = new WebSocket "ws://#{window.location.host}/ws"
+        ws.onopen = () =>
+            console.log "initializing ws" if @debug
+            @ws.send JSON.stringify {
+                "action": "init",
+            }
+        ws.onmessage = (e) =>
+            console.log "received: #{e.data}" if @debug
+            @remote_action e.data
+        return ws
 
     draw_grid: (box_width, box_height, max_width, max_height) ->
         # draw grid on 500x500 canvas
         y = 0
-        while y < max_height - box_height
+        while y <= max_height - box_height
             x = 0
-            while x < max_width - box_width
+            while x <= max_width - box_width
                 @ctx.strokeRect x, y, box_width, box_height
                 x += box_width
             y += box_height
+        return
 
     fill_box: (click_x, click_y, remote_action) ->
         console.log "click #{click_x}, #{click_y}" if @debug
@@ -45,10 +49,10 @@ class Qwirkle
 
         if not remote_action
             @send_action {
-                'action': 'fill',
-                'fill': {
-                    'click_x': x,
-                    'click_y': y,
+                "action": "fill",
+                "fill": {
+                    "click_x": x,
+                    "click_y": y,
                 },
             }
 
@@ -62,7 +66,7 @@ class Qwirkle
 
         if not remote_action
             @send_action {
-                'action': 'clear',
+                "action": "clear",
             }
 
     send_action: (data) ->
@@ -75,5 +79,6 @@ class Qwirkle
         else if d.action is "clear"
             @clear_grid true
 
-c = document.getElementById "qwirkle_canvas"
-q = new Qwirkle c, true
+@Qwirkle = Qwirkle
+
+module.exports = Qwirkle
