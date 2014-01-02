@@ -8,13 +8,13 @@ a websocket game
 
 My setup:
 
-|node|v.0.10.24|
-|npm|1.3.21|
-|python|2.7.5|
-|coffeescript|1.6.3|
-|pip|1.4.1|
-|tornado|3.1.1|
-|supervisord|3.0|
+    node v.0.10.24
+    npm 1.3.21
+    python 2.7.5
+    coffeescript 1.6.3
+    pip 1.4.1
+    tornado 3.1.1 *
+    supervisord 3.0 *
 
 `pip` can be used to install `supervisord` and `tornado` - use `pip install -r requirements.txt`
 
