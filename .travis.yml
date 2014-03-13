@@ -4,6 +4,6 @@ python:
 install:
   - "npm install coffee-script jasmine-node"
   - "pip install -r requirements.txt --use-mirrors"
-  - "make coffee"
+  - "make all"
 script: 
   - make test
