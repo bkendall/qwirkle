@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 install:
-  - "npm install coffee-script jasmine-node"
+  - "make node-install"
   - "pip install -r requirements.txt --use-mirrors"
   - "make all"
 script: 
