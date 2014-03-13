@@ -1,6 +1,7 @@
 # Qwirkle
 
-[![Build Status](https://travis-ci.org/bkendall/qwirkle.png?branch=master)](https://travis-ci.org/bkendall/qwirkle)
+[![Build Status](https://travis-ci.org/bkendall/qwirkle.png?branch=master)](https://travis-ci.org/bkendall/qwirkle) [![Requirements Status](https://requires.io/github/bkendall/qwirkle/requirements.png?branch=master)](https://requires.io/github/bkendall/qwirkle/requirements/?branch=master)
+
 
 a websocket game
 
