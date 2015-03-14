@@ -1,5 +1,5 @@
 *.pyc
-qwirkle/static/js/qwirkle.js
+static/js/qwirkle.js
 node_modules
 .module-cache
 supervisord.pid

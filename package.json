@@ -1,0 +1,24 @@
+{
+  "name": "qwirkle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bkendall/qwirkle.git"
+  },
+  "author": "Bryan Kendall <bryan@bryankendall.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bkendall/qwirkle/issues"
+  },
+  "homepage": "https://github.com/bkendall/qwirkle",
+  "dependencies": {
+    "express": "^4.12.2",
+    "hbs": "^3.0.0",
+    "react-tools": "^0.13.0"
+  }
+}
