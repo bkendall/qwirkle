@@ -33,7 +33,7 @@ var BoardBox = React.createClass({
 var BoardView = React.createClass({
   getInitialState: function () {
     var grid = Array(this.props.width * this.props.height);
-    for (var i = 1; i < grid.length; ++i) { grid[i] = 0; }
+    for (var i = 0; i < grid.length; ++i) { grid[i] = 0; }
     return {
       currentColor: 1,
       grid: grid
