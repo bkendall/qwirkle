@@ -1,16 +1,10 @@
 var GRID_SIZE = 40;
 
 var BoardBox = React.createClass({
-  getInitialState: function () {
-    return {
-      played: false,
-      color: this.props.color
-    };
-  },
   generateClasses: function () {
     var classes = 'q_box ';
-    if (this.state.color !== 0) {
-      classes += (this.state.color === 1) ? 'black' : 'white';
+    if (this.props.color !== 0) {
+      classes += (this.props.color === 1) ? 'black' : 'white';
     }
     return classes;
   },
@@ -21,11 +15,8 @@ var BoardBox = React.createClass({
     };
   },
   handleClick: function () {
-    if (!this.state.played) {
-      this.setState({
-        color: this.props.playColor(),
-        played: true
-      });
+    if (this.props.color === 0) {
+      this.props.playBox(this.props.row, this.props.col);
     }
   },
   render: function () {
@@ -41,29 +32,32 @@ var BoardBox = React.createClass({
 
 var BoardView = React.createClass({
   getInitialState: function () {
-    return { currentColor: 1 };
+    var grid = Array(this.props.width * this.props.height);
+    for (var i = 1; i < grid.length; ++i) { grid[i] = 0; }
+    return {
+      currentColor: 1,
+      grid: grid
+    };
   },
-  playColor: function () {
+  playBox: function (row, col) {
     var color = this.state.currentColor;
+    var grid = this.state.grid;
+    grid[row * this.props.height + col] = color;
     this.setState({
+      grid: grid,
       currentColor: color * -1
     });
-    return color;
   },
   render: function () {
-    var boxes = [];
-    for (var i = 0; i < this.props.height; ++i) {
-      for (var j = 0; j < this.props.width; ++j) {
-        var k = (i*100).toString() + j.toString();
-        boxes.push(<BoardBox
-          playColor={this.playColor}
-          color={0}
-          row={i}
-          col={j}
-          key={k}
-        />);
-      }
-    }
+    var boxes = this.state.grid.map(function (color, i) {
+      return <BoardBox
+        playBox={this.playBox}
+        color={color}
+        row={Math.floor(i / this.props.height)}
+        col={i % this.props.width}
+        key={i}
+      />;
+    }, this);
     var style = {
       width: this.props.width * GRID_SIZE,
       height: this.props.height * GRID_SIZE,
