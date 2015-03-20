@@ -32,21 +32,43 @@ var BoardBox = React.createClass({
 
 var BoardView = React.createClass({
   getInitialState: function () {
-    var grid = Array(this.props.width * this.props.height);
-    for (var i = 0; i < grid.length; ++i) { grid[i] = 0; }
+    var i = 0;
+    var size = this.props.width * this.props.height;
+    var grid = Array(size);
+    while (i < size) { grid[i++] = 0; }
     return {
       currentColor: 1,
       grid: grid
     };
   },
-  playBox: function (row, col) {
-    var color = this.state.currentColor;
+  componentDidMount: function () {
+    this.props.socket.onopen = function () {
+      this.props.socket.onmessage = function (m) {
+        var data = JSON.parse(m.data);
+        if (exists(data.row) && exists(data.col) && exists(data.color)) {
+          this.playBox(data.row, data.col, data.color);
+        }
+      }.bind(this);
+    }.bind(this);
+  },
+  playBox: function (row, col, color) {
+    var sendPlay = !color;
+    if (!color) {
+      color = this.state.currentColor;
+    }
     var grid = this.state.grid;
     grid[row * this.props.height + col] = color;
     this.setState({
       grid: grid,
       currentColor: color * -1
     });
+    if (sendPlay) {
+      this.props.socket.send(JSON.stringify({
+        col: col,
+        row: row,
+        color: color
+      }));
+    }
   },
   render: function () {
     var boxes = this.state.grid.map(function (color, i) {
@@ -70,41 +92,16 @@ var BoardView = React.createClass({
   },
 });
 
-// var SwitchColorView = React.createClass({
-//   handleClick: function (e) {
-//     this.props.board.switchColor();
-//   },
-//   render: function () {
-//     return (
-//       <input
-//         id="pass-btn"
-//         type="button"
-//         value="Change"
-//         onClick={this.handleClick} />
-//     );
-//   },
-// });
-
-// var ContainerView = React.createClass({
-//   getInitialState: function () {
-//     return { 'board': this.props.board };
-//   },
-//   boardUpdate: function () {
-//     console.log('onBoardUpdate');
-//   },
-//   render: function () {
-//     return (
-//       <div>
-//         <SwitchColorView board={this.props.board} />
-//         <BoardView board={this.props.board} />
-//       </div>
-//     )
-//   },
-// `});
+var socket = new WebSocket('ws://104.131.155.240:3001');
 
 React.render(
   <BoardView 
+    socket={socket}
     width={20}
     height={20} />,
   document.getElementById('qwirkle')
 );
+
+function exists (val) {
+  return val !== undefined && val !== null;
+}

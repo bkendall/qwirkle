@@ -19,6 +19,7 @@
   "dependencies": {
     "express": "^4.12.2",
     "hbs": "^3.0.0",
-    "react-tools": "^0.13.0"
+    "react-tools": "^0.13.0",
+    "ws": "^0.7.1"
   }
 }
