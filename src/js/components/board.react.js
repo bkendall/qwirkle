@@ -1,36 +1,9 @@
-var GRID_SIZE = 40;
+var React = require('react');
+var BoardBox = require('./boardBox.react');
+var constants = require('../constants');
+var exists = require('101/exists');
 
-var BoardBox = React.createClass({
-  generateClasses: function () {
-    var classes = 'q_box ';
-    if (this.props.color !== 0) {
-      classes += (this.props.color === 1) ? 'black' : 'white';
-    }
-    return classes;
-  },
-  generateStyle: function () {
-    return {
-      top: this.props.row * GRID_SIZE,
-      left: this.props.col * GRID_SIZE
-    };
-  },
-  handleClick: function () {
-    if (this.props.color === 0) {
-      this.props.playBox(this.props.row, this.props.col);
-    }
-  },
-  render: function () {
-    return (
-      <div
-        className={this.generateClasses()}
-        style={this.generateStyle()}
-        onClick={this.handleClick} >
-      </div>
-    )
-  },
-});
-
-var BoardView = React.createClass({
+var BoardView = module.exports = React.createClass({
   getInitialState: function () {
     var i = 0;
     var size = this.props.width * this.props.height;
@@ -81,8 +54,8 @@ var BoardView = React.createClass({
       />;
     }, this);
     var style = {
-      width: this.props.width * GRID_SIZE,
-      height: this.props.height * GRID_SIZE,
+      width: this.props.width * 40,
+      height: this.props.height * 40
     };
     return (
       <div style={style} id="board">
@@ -92,16 +65,3 @@ var BoardView = React.createClass({
   },
 });
 
-var socket = new WebSocket('ws://104.131.155.240:3001');
-
-React.render(
-  <BoardView 
-    socket={socket}
-    width={20}
-    height={20} />,
-  document.getElementById('qwirkle')
-);
-
-function exists (val) {
-  return val !== undefined && val !== null;
-}

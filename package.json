@@ -2,9 +2,12 @@
   "name": "qwirkle",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/js/qwirkle.js",
   "scripts": {
-    "test": "true"
+    "test": "true",
+    "serve": "node lib/index.js",
+    "build": "NODE_ENV=production ./node_modules/.bin/browserify . | ./node_modules/.bin/uglifyjs -vm > static/js/bundle.min.js",
+    "watch": "./node_modules/.bin/watchify src/js/qwirkle.js -o static/js/bundle.js -v -d"
   },
   "repository": {
     "type": "git",
@@ -17,9 +20,21 @@
   },
   "homepage": "https://github.com/bkendall/qwirkle",
   "dependencies": {
+    "101": "^0.14.0",
+    "browserify": "^9.0.3",
     "express": "^4.12.2",
     "hbs": "^3.0.0",
+    "keymirror": "^0.1.1",
+    "react": "^0.13.1",
     "react-tools": "^0.13.0",
+    "reactify": "^1.1.0",
+    "uglify-js": "^2.4.17",
+    "watchify": "^2.4.0",
     "ws": "^0.7.1"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
   }
 }

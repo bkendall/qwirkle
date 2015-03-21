@@ -3,3 +3,4 @@ static/js/qwirkle.js
 node_modules
 .module-cache
 supervisord.pid
+static/js/bundle.*
