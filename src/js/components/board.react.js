@@ -1,55 +1,33 @@
 var React = require('react');
 var BoardBox = require('./boardBox.react');
+var BoardStore = require('../stores/boardStore');
+var BoardActions = require('../actions/boardActions');
 var constants = require('../constants');
 var exists = require('101/exists');
 
+function getBoardState () {
+  return {
+    grid: BoardStore.getBoard(),
+    currentColor: BoardStore.getCurrentColor()
+  }
+}
+
 var BoardView = module.exports = React.createClass({
   getInitialState: function () {
-    var i = 0;
-    var size = this.props.width * this.props.height;
-    var grid = Array(size);
-    while (i < size) { grid[i++] = 0; }
-    return {
-      currentColor: 1,
-      grid: grid
-    };
+    return getBoardState();
   },
   componentDidMount: function () {
-    this.props.socket.onopen = function () {
-      this.props.socket.onmessage = function (m) {
-        var data = JSON.parse(m.data);
-        if (exists(data.row) && exists(data.col) && exists(data.color)) {
-          this.playBox(data.row, data.col, data.color);
-        }
-      }.bind(this);
-    }.bind(this);
+    BoardStore.addPlayListener(this._onChange);
   },
-  playBox: function (row, col, color) {
-    var sendPlay = !color;
-    if (!color) {
-      color = this.state.currentColor;
-    }
-    var grid = this.state.grid;
-    grid[row * this.props.height + col] = color;
-    this.setState({
-      grid: grid,
-      currentColor: color * -1
-    });
-    if (sendPlay) {
-      this.props.socket.send(JSON.stringify({
-        col: col,
-        row: row,
-        color: color
-      }));
-    }
+  componentWillUnmount: function () {
+    BoardStore.removePlayListener(this._onChange);
   },
   render: function () {
     var boxes = this.state.grid.map(function (color, i) {
       return <BoardBox
-        playBox={this.playBox}
         color={color}
         row={Math.floor(i / this.props.height)}
-        col={i % this.props.width}
+        column={i % this.props.width}
         key={i}
       />;
     }, this);
@@ -63,5 +41,8 @@ var BoardView = module.exports = React.createClass({
       </div>
     );
   },
+  _onChange: function () {
+    this.setState(getBoardState());
+  }
 });
 

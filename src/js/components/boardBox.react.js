@@ -1,3 +1,4 @@
+var BoardActions = require('../actions/boardActions');
 var React = require('react');
 
 var BoardBox = module.exports = React.createClass({
@@ -11,12 +12,12 @@ var BoardBox = module.exports = React.createClass({
   generateStyle: function () {
     return {
       top: this.props.row * 40,
-      left: this.props.col * 40
+      left: this.props.column * 40
     };
   },
   handleClick: function () {
-    if (this.props.color === 0) {
-      this.props.playBox(this.props.row, this.props.col);
+    if (!this.props.color) {
+      BoardActions.playBox(this.props.row, this.props.column);
     }
   },
   render: function () {
