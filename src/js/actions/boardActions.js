@@ -1,27 +1,14 @@
 var AppDispatcher = require('../dispatcher');
 var constants = require('../constants');
-
-var host = 'localhost';
-if (process.env.NODE_ENV === 'production') {
-  host = 'qwirkle.me';
-}
-var _socket = new WebSocket('ws://' + host + ':3001');
-_socket.onmessage = function (m) {
-  var d = JSON.parse(m.data);
-  boardActions.playBox(d.row, d.column, d.color, true);
-};
+var exists = require('101/exists');
 
 var boardActions = module.exports = {
-  playBox: function (row, column, color, fromSocket) {
+  playBox: function (row, column, color) {
     AppDispatcher.dispatch({
-      actionType: constants.BOARD_PLAY,
+      actionType: exists(color) ? constants.SOCKET_PLAY : constants.BOARD_PLAY,
       row: row,
       column: column,
-      color: color,
-      fromSocket: !!fromSocket
+      color: color
     });
-  },
-  sendPlay: function (d) {
-    _socket.send(d);
   }
 };
