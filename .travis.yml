@@ -3,4 +3,8 @@ node_js:
   - "0.10"
 sudo: false
 after_install: 
-  - "./node_modules/.bin/jsx --extension jsx src/js/ static/js/"
+  - ./node_modules/.bin/jsx --extension jsx src/js/ static/js/
+before_script:
+  - npm run build
+script:
+  - npm run test
