@@ -1,5 +1,4 @@
 var AppDispatcher = require('../dispatcher');
-var BoardActions = require('../actions/boardActions');
 var EventEmitter = require('events').EventEmitter;
 var constants = require('../constants');
 var assign = require('object-assign');
@@ -25,7 +24,9 @@ var boardStore = module.exports = assign({}, EventEmitter.prototype, {
     return _currentColor;
   },
   emitPlay: function () {
-    this.emit(constants.PLAY_EVENT);
+    var args = Array.prototype.slice.call(arguments);
+    args.unshift(constants.PLAY_EVENT);
+    this.emit.apply(this, args);
   },
   addPlayListener: function (callback) {
     this.on(constants.PLAY_EVENT, callback);
@@ -37,17 +38,16 @@ var boardStore = module.exports = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case constants.BOARD_PLAY:
-      if (!exists(action.color)) {
-        action.color = _currentColor;
-        _currentColor = _currentColor * -1;
-      }
+    case constants.SOCKET_PLAY:
       setBox(action.row, action.column, action.color);
-      if (!action.fromSocket) {
-        var d = JSON.stringify(action);
-        BoardActions.sendPlay(d);
-      }
-      boardStore.emitPlay();
+      boardStore.emitPlay(false);
+      return
+
+    case constants.BOARD_PLAY:
+      action.color = _currentColor;
+      _currentColor = _currentColor * -1;
+      setBox(action.row, action.column, action.color);
+      boardStore.emitPlay(true, action);
       break;
 
     default:
