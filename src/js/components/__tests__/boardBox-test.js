@@ -8,13 +8,13 @@ describe('BoardBox', function () {
 
     var box = TestUtils.renderIntoDocument(
       <BoardBox
-        row='0'
-        column='0'
-        color='0' />
+        row={0}
+        column={0}
+        color={0} />
     );
 
     var div = TestUtils.findRenderedDOMComponentWithTag(box, 'div');
-    console.log(div);
-    expect(true).toEqual(false);
+    
+    expect(div.props.className.trim()).toEqual('q_box');
   });
 });
